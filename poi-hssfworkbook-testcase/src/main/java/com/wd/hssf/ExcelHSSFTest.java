@@ -1,4 +1,4 @@
-package com.wd.excel;
+package com.wd.hssf;
 
 
 import java.io.FileInputStream;
@@ -14,6 +14,10 @@ import java.io.FileInputStream;
         import org.apache.poi.hssf.usermodel.HSSFSheet;
         import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+/**
+ * HSSF：操作Excel 97(.xls)格式
+ * @author Hailin
+ */
 public class ExcelHSSFTest {
 
     public static void main(String[] args) {
