@@ -1,0 +1,147 @@
+通过POI来进行单元格格式的设定：
+    设定格式使用「HSSFCellStyle」类。它有一个构造方法：
+    protected HSSFCellStyle(short index, ExtendedFormatRecord rec)
+    虽然有构造方法，但却是protected的，所以不能直接使用，要通过一个工作簿workbook来生成格式对象。
+
+    在POI里，格式好像是以workbook为单位来管理的，所以要先作成一个格式对象，保存在workbook里，然后再对已生成好的单元格进行设定。
+
+
+在单元格里指定格式：
+    1，要作成一个格式对象，可以使用「HSSFWorkbook」类的「createCellStyle」方法。
+    public HSSFCellStyle createCellStyle()
+    2，要取出现有的格式对象的话，使用「HSSFWorkbook」类的「getCellStyleAt」方法，这个方法有参数，是被保存格式的INDEX号。
+    public HSSFCellStyle getCellStyleAt(short idx)
+    3，对于某一个单元格，也可以取出它的格式对象。这时要使用「HSSFCell」类的「getCellStyle」方法。
+    public HSSFCellStyle getCellStyle()
+    4，这样的话，不管是新创建的或者是从现有的单元格里取出来的格式对象，都可以用来对某一个单元格进行格式的设定。设定方法使用「HSSFCell」类的「setCellStyle」方法。
+    public void setCellStyle(HSSFCellStyle style)
+
+POI单元格颜色设定：
+    先从单元格顔色设定开始介绍。单元格的顔色有前景色和背景色。
+    1，前景色的设定使用「HSSFCellStyle」类的「setFillForegroundColor」方法。
+    public void setFillForegroundColor(short bg)
+
+    2，背景色的设定则使用「HSSFCellStyle」类的「setFillBackgroundColor」方法。
+    public void setFillBackgroundColor(short bg)
+    两个方法都是通过参数来设定具体什么顔色。该参数类型为short型，在「HSSFColor」类里，准备了各种各样顔色的定义值。
+
+HSSFColor类：
+
+    HSSFColor类定义如下：public class HSSFColor extends java.lang.Object
+    而各种顔色又是作为HSSFColor类的子类，定义一览表如下：
+    HSSFColor.AQUA    HSSFColor.BLACK
+    HSSFColor.BLUE
+    HSSFColor.BLUE_GREY
+    HSSFColor.BRIGHT_GREEN HSSFColor.BROWN
+    HSSFColor.CORAL HSSFColor.CORNFLOWER_BLUE
+    HSSFColor.DARK_BLUE HSSFColor.DARK_GREEN
+    HSSFColor.DARK_RED HSSFColor.DARK_TEAL
+    HSSFColor.DARK_YELLOW HSSFColor.GOLD
+    HSSFColor.GREEN HSSFColor.GREY_25_PERCENT
+    HSSFColor.GREY_40_PERCENT HSSFColor.GREY_50_PERCENT
+    HSSFColor.GREY_80_PERCENT HSSFColor.INDIGO
+    HSSFColor.LAVENDER HSSFColor.LEMON_CHIFFON
+    HSSFColor.LIGHT_BLUE HSSFColor.LIGHT_CORNFLOWER_BLUE
+    HSSFColor.LIGHT_GREEN HSSFColor.LIGHT_ORANGE
+    HSSFColor.LIGHT_TURQUOISE HSSFColor.LIGHT_YELLOW
+    HSSFColor.LIME HSSFColor.MAROON
+    HSSFColor.OLIVE_GREEN HSSFColor.ORANGE
+    HSSFColor.ORCHID HSSFColor.PALE_BLUE
+    HSSFColor.PINK HSSFColor.PLUM
+    HSSFColor.RED HSSFColor.ROSE
+    HSSFColor.ROYAL_BLUE HSSFColor.SEA_GREEN
+    HSSFColor.SKY_BLUE HSSFColor.TAN
+    HSSFColor.TEAL HSSFColor.TURQUOISE
+    HSSFColor.VIOLET HSSFColor.WHITE
+    HSSFColor.YELLOW
+
+    设定顔色时，用这些子类的静态常量「index」作为参数，使用方法如下：
+    [java] view plain copy
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFCellStyle style = workbook.createCellStyle();
+        style.setFillForegroundColor(HSSFColor.LIME.index);
+        style.setFillBackgroundColor(HSSFColor.GREEN.index);
+    如果这些顔色还不够你用的话，那么下面介绍怎么设定自己想要的顔色。
+
+填充模式：
+    1，指定填充模式的话，使用「HSSFCellStyle」类的「setFillPattern」方法。
+    public void setFillPattern(short fp)
+    2，指定的填充模式，在「HSSFCellStyle」类里也有定义，类型为static short型，如下所示：
+    值 说明
+    NO_FILL No background
+    SOLID_FOREGROUND Solidly filled
+    FINE_DOTS Small fine dots
+    ALT_BARS Wide dots
+    SPARSE_DOTS Sparse dots
+    THICK_HORZ_BANDS Thick horizontal bands
+    THICK_VERT_BANDS Thick vertical bands
+    THICK_BACKWARD_DIAG Thick backward facing diagonals
+    THICK_FORWARD_DIAG Thick forward facing diagonals
+    BIG_SPOTS Large spots
+    BRICKS Brick-like layout
+    THIN_HORZ_BANDS Thin horizontal bands
+    THIN_VERT_BANDS Thin vertical bands
+    THIN_BACKWARD_DIAG Thin backward diagonal
+    THIN_FORWARD_DIAG Thin forward diagonal
+    SQUARES Squares
+    DIAMONDS Diamonds
+
+        实际的使用方法如下：
+
+    [java] view plain copy
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFCellStyle style = workbook.createCellStyle();
+        style.setFillForegroundColor(HSSFColor.LIME.index);
+        style.setFillBackgroundColor(HSSFColor.GREEN.index);
+        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+
+POI设置边框：
+
+    在做一个电子表格时，边框的设置有时是必不可少的。这一节就来介绍边框，设置时，可以指定边框的位置，边框的种类，边框的顔色。 首先是边框的位置和种类。对单元格设置边框时，有上下左右位置之分，所以POI也准备了四个不同的方法。
+    上部的边框： public void setBorderTop(short border)
+    下部的边框： public void setBorderBottom(short border)
+    左侧的边框： public void setBorderLeft(short border)
+    右侧的边框： public void setBorderRight(short border)
+
+    参数通过表示边框种类的short型值来指定。下面是定义在「HSSFCellStyle」类里可以被指定值的一览表。
+    值 说明
+    BORDER_DASH_DOT dash-dot border
+    BORDER_DASH_DOT_DOT dash-dot-dot border
+    BORDER_DASHED dash border
+    BORDER_DOTTED dot borderhair-line border
+    BORDER_DOUBLE double-line border
+    BORDER_HAIR hair-line border
+    BORDER_MEDIUM Medium border
+    BORDER_MEDIUM_DASH_DOT medium dash-dot border
+    BORDER_MEDIUM_DASH_DOT_DOT medium dash-dot-dot border
+    BORDER_MEDIUM_DASHED Medium dashed border
+    BORDER_NONE No border
+    BORDER_SLANTED_DASH_DOT slanted dash-dot border
+    BORDER_THICK Thick border
+    BORDER_THIN Thin border
+
+
+    比如要在单元格下边框设置两重线的边框时，按如下方法：
+    [java] view plain copy
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFCellStyle style = workbook.createCellStyle();
+        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+
+
+    下面再看看指定边框顔色。同样也分为上下左右边框来操作。
+    上部的边框： public void setTopBorderColor(short color)
+    下部的边框： public void setBottomBorderColor(short color)
+    左侧的边框： public void setLeftBorderColor(short color)
+    右侧的边框： public void setRightBorderColor
+
+    仍然是通过参数来指定顔色，而且使用方法和前面一节也是一样。具体如下：
+    [java] view plain copy
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFCellStyle style = workbook.createCellStyle();
+        style.setRightBorderColor(HSSFColor.RED.index);
+        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
