@@ -11,15 +11,10 @@
 
     <artifactId>poi-xssfworkbook-testcase</artifactId>
 
-    <properties>
-        <org.apache.poi.version>3.9</org.apache.poi.version>
-    </properties>
     <dependencies>
-        <!--poi xssf 所需jar-->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>${org.apache.poi.version}</version>
         </dependency>
     </dependencies>
 

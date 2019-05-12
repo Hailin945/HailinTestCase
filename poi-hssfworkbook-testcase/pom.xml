@@ -11,16 +11,11 @@
 
     <artifactId>poi-hssfworkbook-testcase</artifactId>
 
-    <properties>
-        <org.apache.poi.version>3.9</org.apache.poi.version>
-    </properties>
-
     <dependencies>
         <!--poi所需的jar-->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>${org.apache.poi.version}</version>
         </dependency>
 
 
