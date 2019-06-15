@@ -8,32 +8,37 @@ import java.util.regex.Pattern;
  * @author Hailin
  * @date 2019-04-16
  */
-public class InfoValidateUtil {
+public class InfoValidateUtils {
 
     /**
      * 正则表达式：验证用户名
      */
-    private static final String REGEX_USERNAME = "^[a-zA-Z]\\w{5,20}$";
+    public static final String REGEX_USERNAME = "^[a-zA-Z]\\w{5,20}$";
 
     /**
      * 正则表达式：验证密码
      */
-    private static final String REGEX_PASSWORD = "^[a-zA-Z0-9]{6,20}$";
+    public static final String REGEX_PASSWORD = "^[a-zA-Z0-9]{6,20}$";
 
     /**
      * 正则表达式：验证手机号
      */
-    private static final String REGEX_MOBILE = "^1\\d{10}$";
+    public static final String REGEX_MOBILE = "^1\\d{10}$";
 
     /**
      * 正则表达式：验证邮箱
      */
-    private static final String REGEX_EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+    public static final String REGEX_EMAIL = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 
     /**
-     * 正则表达式：验证汉字
+     * 正则表达式：验证所有字符都是汉字
      */
-    private static final String REGEX_CHINESE = "^[\u4e00-\u9fa5],{0,}$";
+    public static final String REGEX_CHINESE = "^[\\u4e00-\\u9fa5]{0,}$";
+
+    /**
+     * 正则表达式：验证以字母开头
+     */
+    public static final String REGEX_LETTER_START = "^[a-zA-Z][\\s\\S]*$";
 
     /**
      * 正则表达式：验证身份证（15位或者18位，最后一位可以为字母）
@@ -58,28 +63,28 @@ public class InfoValidateUtil {
      * \\d{3} 三位数字                   123（第十五位奇数代表男，偶数代表女），15位身份证不含X
      * $结尾
      */
-    private static final String REGEX_ID_NUMBER = "(^[1-9]\\d{5}(18|19|20)\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$)|" +
+    public static final String REGEX_ID_NUMBER = "(^[1-9]\\d{5}(18|19|20)\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$)|" +
             "(^[1-9]\\d{5}\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}$)";
 
     /**
      * 正则表达式：验证URL
      */
-    private static final String REGEX_URL = "http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?";
+    public static final String REGEX_URL = "http(s)?://([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?";
 
     /**
      * 正则表达式：验证IP地址
      */
-    private static final String REGEX_IP_ADDR = "(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)";
+    public static final String REGEX_IP_ADDR = "(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)";
 
     /**
      * 正则表达式：验证驾校编号
      */
-    private static final String REGEX_SCHOOL_CODE = "^\\d{3}";
+    public static final String REGEX_SCHOOL_CODE = "^\\d{3}";
 
     /**
      * 正则表达式：验证车牌号
      */
-    private static final String REGEX_LICENSE_PLATE_NUMBER = "^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$";
+    public static final String REGEX_LICENSE_PLATE_NUMBER = "^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1}$";
 
     /**
      * 校验用户名
@@ -128,6 +133,9 @@ public class InfoValidateUtil {
      * @return 校验通过返回true，否则返回false
      */
     public static boolean isChinese(final String chinese) {
+        if (chinese == null || "".equals(chinese)) {
+            return false;
+        }
         return Pattern.matches(REGEX_CHINESE, chinese);
     }
 
@@ -216,5 +224,15 @@ public class InfoValidateUtil {
      */
     public static boolean isLicensePlatNumber(final String licensePlateNumber) {
         return Pattern.matches(REGEX_LICENSE_PLATE_NUMBER, licensePlateNumber);
+    }
+
+    /**
+     * 验证字符串以字母开头
+     *
+     * @param s 需要验证的字符串
+     * @return 校验通过返回true，否则返回false
+     */
+    public static boolean isLetterStart(final String s) {
+        return Pattern.matches(REGEX_LETTER_START, s);
     }
 }
